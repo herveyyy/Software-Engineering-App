@@ -4,7 +4,6 @@ import {
   getDocs,
   collection,
   doc,
-  setDoc,
   deleteDoc
 } from 'firebase/firestore';
 import { database } from '../../firebaseConfig';
@@ -13,7 +12,7 @@ const databaseReference = collection(database, 'SoftwareEngineers');
 function DataTable() {
 
   const [fireData, setFireData] = useState([]);
-  const [userInfo, setUserInfo] = useState(null)
+  const [userInfo, setUserInfo] = useState("")
   const [show, toggleShow] = useState(false);
 
   //show update modal

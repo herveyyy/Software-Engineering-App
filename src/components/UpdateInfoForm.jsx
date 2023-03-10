@@ -1,90 +1,73 @@
-import React,{ useState, useEffect , useRef} from "react";
-import {
-  doc,
-  setDoc,
-  collection
-} from 'firebase/firestore';
+import React, { useState } from "react";
+import { doc, setDoc, collection } from "firebase/firestore";
 import { database } from "../../firebaseConfig";
 import CustomModal from "./CustomModal";
 
-export default function UpdateInfoForm({isOpen, onClose, userInfo}) {
-    const [engineerName, setEngineerName] = useState("");
-    const [emailAddress, setEmailAddress] = useState("");
-    const [skills, setSkills] = useState([]);
-    const [newSkill, setNewSkill] = useState("");
-    const databaseRef = collection(database, 'SoftwareEngineers');
-    const [skillCount, setSkillCount] = useState(0);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-  
-   
-      const handleInfo = () => {
-        if(isOpen === true){
-            setEngineerName(userInfo.engineerName)
-        }else{
-            alert("Somethings wrong")
-        }
-        
-  
-    };
-    const handleOpenModal = () => {
-       
-      setIsModalOpen(true);
-  
-    };
-    const removeSkill = (skillToRemove) => {
-        setSkills(skills.filter((skill) => skill !== skillToRemove));
-      };
-    const handleCloseModal = () => {
-     
-      setIsModalOpen(false);
-     
-    };
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(userInfo)
-      if(skills.length != 0){
-        updateDocument(userInfo.id);
-        console.log({engineerName, emailAddress, skills}, "Changes Saved.");
-        handleOpenModal()
-        setEngineerName("");
-        setEmailAddress("");
-        setSkills([]);
-        
-      }else{
-        setSkills([""]);
-        updateDocument(userInfo.id);
-        console.log({engineerName, emailAddress, skills}, "Changes Saved.");
-        handleOpenModal()
-        setEngineerName("");
-        setEmailAddress("");
+export default function UpdateInfoForm({ isOpen, onClose, userInfo }) {
+  const [engineerName, setEngineerName] = useState(userInfo.engineerName || "" );
+  const [emailAddress, setEmailAddress] = useState(userInfo.emailAddress || "");
+  const [skills, setSkills] = useState(userInfo.skills || []);
+  const [newSkill, setNewSkill] = useState("");
+  const [skillCount, setSkillCount] = useState(0);
+  const databaseRef = collection(database, "SoftwareEngineers");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-      }
-      
-      };
-      const handleAddSkill = () => {
-        if(skillCount < 10  && newSkill != ""){
-        setSkills([...skills, newSkill]);
-        setNewSkill("");
-        setSkillCount(skillCount + 1);
-      };}
-    
-    //update
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (skills.length !== 0) {
+      updateDocument(userInfo.id);
+      console.log({ engineerName, emailAddress, skills }, "Changes Saved.");
+      handleOpenModal();
+      setEngineerName("");
+      setEmailAddress("");
+      setSkills([]);
+    } else {
+      setSkills([""]);
+      updateDocument(userInfo.id);
+      console.log({ engineerName, emailAddress, skills }, "Changes Saved.");
+      handleOpenModal();
+      setEngineerName("");
+      setEmailAddress("");
+    }
+  };
+  const removeSkill = (skill) => {
+    setSkills(skills.filter((s) => s !== skill));
+    setSkillCount(skillCount - 1);
+  };
+  const handleAddSkill = () => {
+    if (skillCount < 10 && newSkill !== "") {
+      setSkills([...skills, newSkill]);
+      setNewSkill("");
+      setSkillCount(skillCount + 1);
+    }
+  };
+
+  //update
   const updateDocument = async (id) => {
     try {
       const docRef = doc(databaseRef, id);
-      await setDoc(docRef, {
-        engineerName: engineerName,
-        emailAddress: emailAddress,
-        skills: skills
-      }, { merge: true });
-      console.log('Document with id', id, 'successfully updated!');
+      await setDoc(
+        docRef,
+        {
+          engineerName: engineerName,
+          emailAddress: emailAddress,
+          skills: skills,
+        },
+        { merge: true }
+      );
+      console.log("Document with id", id, "successfully updated!");
     } catch (error) {
-      console.error('Error updating document:', error);
+      console.error("Error updating document:", error);
     }
   };
-//   useEffect(() => {
-    
-//   });
 
 
 
@@ -173,19 +156,19 @@ export default function UpdateInfoForm({isOpen, onClose, userInfo}) {
             +
           </button>
         </div>
-        <ul className="list-disc list-inside">
+        <ul className="list-disc list-inside ">
           {
           
           skills.map((skill) => (
             <li key={skill}>{skill}
             <button
-             className="px-2 mx-4 shadow-lg rounded-md bg-red-500 text-white font-bold hover:bg-red-800" onClick={() => removeSkill(skill)}>-</button></li>
+             className="px-2 mx-4 mt-1 shadow-lg rounded-md bg-red-500 text-white font-bold hover:bg-red-800" onClick={() => removeSkill(skill)}>-</button></li>
           ))}
         </ul>
        </div>
        <div className="text-right">
         <button
-          type="submit"
+          onClick={removeSkill}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
         >
           Submit
