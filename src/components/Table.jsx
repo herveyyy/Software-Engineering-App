@@ -8,10 +8,25 @@ import {
   deleteDoc
 } from 'firebase/firestore';
 import { database } from '../../firebaseConfig';
+import UpdateInfoForm from './UpdateInfoForm';
 const databaseReference = collection(database, 'SoftwareEngineers');
 function DataTable() {
+
   const [fireData, setFireData] = useState([]);
+  const [userInfo, setUserInfo] = useState(null)
   const [show, toggleShow] = useState(false);
+
+  //show update modal
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
+
+  const handleOpenModalUpdate = (x) => {
+    setUserInfo(x);
+    setIsModalOpenUpdate(true);
+  };
+
+  const handleCloseModalUpdate = () => {
+    setIsModalOpenUpdate(false);
+  };
   //getdata
   const getData = async () => {
     const response = await getDocs(databaseReference);
@@ -42,7 +57,6 @@ function DataTable() {
     }
     
   };
-
   //render table data
 
   // useEffect(() => {
@@ -89,12 +103,21 @@ function DataTable() {
                     ))}
                   </ul>
                 </td>
-                {!show && <td className="px-6 py-4">
+                {!show && <td className="px- py-4 flex flex-col-2">
+                  <div>
                    <a 
                    onClick={() => handleDelete(data.id)}
-                   className="text-red-800 hover:text-red-500 cursor-pointer">
+                   className="text-red-800 hover:text-red-500 cursor-pointer ">
                     Delete
                   </a>
+                  </div>
+                  <div>
+                   <a 
+                  onClick={() => handleOpenModalUpdate(data)}
+                   className="text-green-800 hover:text-green-500 cursor-pointer px-5">
+                    Edit
+                  </a>
+                  </div>
                 </td>}
               </tr>
             );
@@ -121,7 +144,7 @@ className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 round
 </button>
 </div>
 </div>
-    
+     <UpdateInfoForm isOpen={isModalOpenUpdate} onClose={handleCloseModalUpdate} userInfo={userInfo} />
     </div>
   );
 }
