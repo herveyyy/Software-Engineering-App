@@ -34,13 +34,13 @@ function HomeComp() {
               Software Engineer
             </p>
             <p className="flex flex-col items-center max-w-lg mt-6 text-lg  text-center text-gray-200 font-normal">
-              We care for Slaves. 👷‍♀️👷
+              We are hiring dedicated Software Engineers. 👷‍♀️👷
             </p>
             <div className="pt-10">
             <button 
             onClick={handleOpenModal}
         className="font-bold bg-gray-800 border-2 text-white py-4 px-10 rounded border-gray-900 hover:border-1 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-10">
-              Add Slaves
+              Join Us!
             </button>
             
             </div>
