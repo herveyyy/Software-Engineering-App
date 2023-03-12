@@ -6,7 +6,7 @@ import CustomModal from "./CustomModal";
 export default function UpdateInfoForm({ isOpen, onClose, userInfo }) {
   const [engineerName, setEngineerName] = useState(userInfo.engineerName || "" );
   const [emailAddress, setEmailAddress] = useState(userInfo.emailAddress || "");
-  const [skills, setSkills] = useState(userInfo.skills || []);
+  let [skills, setSkills] = useState(userInfo.skills || []);
   const [newSkill, setNewSkill] = useState("");
   const [skillCount, setSkillCount] = useState(0);
   const databaseRef = collection(database, "SoftwareEngineers");
@@ -24,7 +24,7 @@ export default function UpdateInfoForm({ isOpen, onClose, userInfo }) {
     event.preventDefault();
     if (skills.length !== 0) {
       updateDocument(userInfo.id);
-      console.log({ engineerName, emailAddress, skills }, "Changes Saved.");
+      console.log("Changes Saved.");
       handleOpenModal();
       setEngineerName("");
       setEmailAddress("");
@@ -32,7 +32,7 @@ export default function UpdateInfoForm({ isOpen, onClose, userInfo }) {
     } else {
       setSkills([""]);
       updateDocument(userInfo.id);
-      console.log({ engineerName, emailAddress, skills }, "Changes Saved.");
+      console.log("Changes Saved.");
       handleOpenModal();
       setEngineerName("");
       setEmailAddress("");
@@ -109,10 +109,10 @@ export default function UpdateInfoForm({ isOpen, onClose, userInfo }) {
           id="engineersName"
           type="text"
           className="border border-gray-400 p-2 w-full rounded"
-          placeholder="Enter Engineer's Name"
+          placeholder={userInfo.engineerName}
           value={engineerName}
           onChange={(e) => setEngineerName(e.target.value, userInfo.engineerName)}
-          required
+          
         />
         </div>
        <div className="mb-4">
@@ -126,10 +126,10 @@ export default function UpdateInfoForm({ isOpen, onClose, userInfo }) {
           id="emailAddress"
           type="text"
           className="border border-gray-400 p-2 w-full rounded"
-          placeholder="Enter Email address"
+          placeholder={userInfo.emailAddress}
           value={emailAddress}
           onChange={(e) => setEmailAddress(e.target.value)}
-          required
+          
         />
        </div>
        <div className="mb-4">
@@ -168,7 +168,7 @@ export default function UpdateInfoForm({ isOpen, onClose, userInfo }) {
        </div>
        <div className="text-right">
         <button
-          onClick={removeSkill}
+        type="Submit" 
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
         >
           Submit

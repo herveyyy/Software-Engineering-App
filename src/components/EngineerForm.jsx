@@ -41,7 +41,11 @@ function EngineerForm({ isOpen, onClose }) {
         setEmailAddress("");
 
       }
-      
+    
+      };
+      const removeSkill = (skill) => {
+        setSkills(skills.filter((s) => s !== skill));
+        setSkillCount(skillCount - 1);
       };
       const handleAddSkill = () => {
         if(skillCount < 10  && newSkill != ""){
@@ -85,7 +89,7 @@ function EngineerForm({ isOpen, onClose }) {
             </div>
             <div className="p-4">
             <form onSubmit={handleSubmit}>
-      <div className="mb-4">
+        <div className="mb-4">
         <label
           htmlFor="engineersName"
           className="block text-gray-700 font-medium mb-2"
@@ -101,8 +105,8 @@ function EngineerForm({ isOpen, onClose }) {
           onChange={(e) => setEngineerName(e.target.value)}
           required
         />
-      </div>
-      <div className="mb-4">
+        </div>
+       <div className="mb-4">
         <label
           htmlFor="emailAddress"
           className="block text-gray-700 font-medium mb-2"
@@ -118,8 +122,8 @@ function EngineerForm({ isOpen, onClose }) {
           onChange={(e) => setEmailAddress(e.target.value)}
           required
         />
-      </div>
-      <div className="mb-4">
+       </div>
+       <div className="mb-4">
         <label
           htmlFor="skills"
           className="block text-gray-700 font-medium mb-2"
@@ -147,19 +151,21 @@ function EngineerForm({ isOpen, onClose }) {
           {
           
           skills.map((skill) => (
-            <li key={skill}>{skill}</li>
+            <li key={skill}>{skill}
+            <button
+             className="px-2 mx-4 mt-1 shadow-lg rounded-md bg-red-500 text-white font-bold hover:bg-red-800" onClick={() => removeSkill(skill)}>-</button></li>
           ))}
         </ul>
-      </div>
-      <div className="text-right">
+       </div>
+       <div className="text-right">
         <button
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-150 ease-in-out"
         >
           Submit
         </button>
-      </div>
-    </form>
+        </div>
+      </form>
             </div>
           </div>
           <CustomModal isOpen={isModalOpen} onClose={handleCloseModal} title={"🦊Firebase"} details={"Information Added"}/>
